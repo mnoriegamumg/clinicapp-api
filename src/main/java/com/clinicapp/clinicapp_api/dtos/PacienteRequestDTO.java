@@ -35,4 +35,8 @@ public class PacienteRequestDTO {
     private LocalDate fechaNacimiento;
 
     private String direccion;
+
+    @NotBlank(message = "El DPI es obligatorio")
+    @Pattern(regexp = "^[0-9]{13}$", message = "El DPI debe tener 13 dígitos")
+    private String dpi;
 }

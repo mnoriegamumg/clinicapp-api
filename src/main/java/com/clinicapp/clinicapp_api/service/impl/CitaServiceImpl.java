@@ -5,6 +5,7 @@ package com.clinicapp.clinicapp_api.service.impl;
 
 import com.clinicapp.clinicapp_api.dtos.CitaRequestDTO;
 import com.clinicapp.clinicapp_api.dtos.CitaResponseDTO;
+import com.clinicapp.clinicapp_api.dtos.PacienteRequestDTO;
 import com.clinicapp.clinicapp_api.entity.Cita;
 import com.clinicapp.clinicapp_api.entity.Medico;
 import com.clinicapp.clinicapp_api.entity.Paciente;
@@ -16,6 +17,7 @@ import com.clinicapp.clinicapp_api.repository.MedicoRepository;
 import com.clinicapp.clinicapp_api.repository.PacienteRepository;
 import com.clinicapp.clinicapp_api.service.CitaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,9 @@ public class CitaServiceImpl implements CitaService {
     private final MedicoRepository   medicoRepository;
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Autowired
+    private PacienteServiceImpl pacienteService;
 
     @Override
     public CitaResponseDTO crear(CitaRequestDTO request) {

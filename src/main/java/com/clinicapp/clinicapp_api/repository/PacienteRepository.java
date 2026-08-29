@@ -25,4 +25,16 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     Long contarTotalPacientes();
 
     List<Paciente> findByNombreContainingOrApellidoContaining(String nombre, String apellido);
+
+    Paciente findByDpiEqualsIgnoreCase(String dpi);
+
+    /**
+     * Buscar un paciente por su DPI
+     */
+    Optional<Paciente> findByDpi(String dpi);
+
+    /**
+     * Verificar si un DPI ya existe en la base de datos
+     */
+    boolean existsByDpi(String dpi);
 }

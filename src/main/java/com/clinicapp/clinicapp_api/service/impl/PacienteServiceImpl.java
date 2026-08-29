@@ -40,6 +40,7 @@ public class PacienteServiceImpl implements PacienteService {
                 .telefono(request.getTelefono())
                 .fechaNacimiento(request.getFechaNacimiento())
                 .direccion(request.getDireccion())
+                .dpi(request.getDpi())
                 .build();
 
         Paciente guardado = pacienteRepository.save(paciente);
@@ -57,6 +58,7 @@ public class PacienteServiceImpl implements PacienteService {
         paciente.setTelefono(request.getTelefono());
         paciente.setFechaNacimiento(request.getFechaNacimiento());
         paciente.setDireccion(request.getDireccion());
+        paciente.setDpi(request.getDpi());
 
         Paciente actualizado = pacienteRepository.save(paciente);
         return convertirAResponse(actualizado);
@@ -96,17 +98,38 @@ public class PacienteServiceImpl implements PacienteService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public Long contarTotal() {
         return pacienteRepository.contarTotalPacientes();
     }
+
+    @Override
+    public PacienteResponseDTO obtenerPorDpi(String dpi) {
+
+        if (dpi == null || dpi.trim().isEmpty()) {
+            throw new IllegalArgumentException("El DPI no puede estar vacío");
+        }
+
+        Paciente paciente = pacienteRepository.findByDpi(dpi)
+                .orElseThrow(() -> new ResourceNotFoundException("Paciente no encontrado con DPI: " + dpi));
+
+
+        return convertirAResponse(paciente);
+    }
+
+    @Override
+    public boolean existeDpi(String dpi) {
+        return pacienteRepository.existsByDpi(dpi);
+    }
+
 
     private PacienteResponseDTO convertirAResponse(Paciente paciente) {
         return PacienteResponseDTO.builder()
                 .id(paciente.getId())
                 .nombre(paciente.getNombre())
                 .apellido(paciente.getApellido())
-                .nombreCompleto(paciente.getNombreCompleto())
+                .dpi(paciente.getDpi())
                 .email(paciente.getEmail())
                 .telefono(paciente.getTelefono())
                 .fechaNacimiento(paciente.getFechaNacimiento())

@@ -11,10 +11,12 @@ import com.clinicapp.clinicapp_api.repository.UsuarioRepository;
 import com.clinicapp.clinicapp_api.security.JwtTokenProvider;
 import com.clinicapp.clinicapp_api.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -33,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new CredencialesInvalidasException("Usuario o contraseña incorrectos"));
 
+        log.info(usuario.toString());
         // Verificar si el usuario está activo
         if (!usuario.getActivo()) {
             throw new CredencialesInvalidasException("Usuario inactivo, contacte al administrador");

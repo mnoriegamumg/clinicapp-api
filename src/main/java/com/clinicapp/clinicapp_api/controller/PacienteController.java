@@ -59,4 +59,34 @@ public class PacienteController {
         pacienteService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Buscar un paciente por su número de DPI
+     * Ejemplo: GET /api/pacientes/dpi/1234567890123
+     */
+    @GetMapping("/dpi/{dpi}")
+    public ResponseEntity<PacienteResponseDTO> obtenerPorDpi(@PathVariable String dpi) {
+        PacienteResponseDTO paciente = pacienteService.obtenerPorDpi(dpi);
+        return ResponseEntity.ok(paciente);
+    }
+
+    /**
+     * Buscar un paciente por DPI usando query param
+     * Ejemplo: GET /api/pacientes/buscar-por-dpi?dpi=1234567890123
+     */
+    @GetMapping("/buscar-por-dpi")
+    public ResponseEntity<PacienteResponseDTO> buscarPorDpi(@RequestParam String dpi) {
+        PacienteResponseDTO paciente = pacienteService.obtenerPorDpi(dpi);
+        return ResponseEntity.ok(paciente);
+    }
+
+    /**
+     * Verificar si un DPI ya existe
+     * Ejemplo: GET /api/pacientes/validar-dpi?dpi=1234567890123
+     */
+    @GetMapping("/validar-dpi")
+    public ResponseEntity<Boolean> validarDpi(@RequestParam String dpi) {
+        boolean existe = pacienteService.existeDpi(dpi);
+        return ResponseEntity.ok(existe);
+    }
 }

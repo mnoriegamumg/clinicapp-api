@@ -20,10 +20,10 @@ public class PacienteResponseDTO {
     private Long id;
     private String nombre;
     private String apellido;
-    private String nombreCompleto;
     private String email;
     private String telefono;
     private LocalDate fechaNacimiento;
     private String direccion;
     private LocalDateTime createdAt;
+    private String dpi;
 }

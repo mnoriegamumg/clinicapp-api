@@ -23,4 +23,9 @@ public interface PacienteService {
     List<PacienteResponseDTO> buscarPorNombre(String busqueda);
 
     Long contarTotal();
+
+
+    PacienteResponseDTO obtenerPorDpi(String dpi);
+
+    boolean existeDpi(String dpi);
 }

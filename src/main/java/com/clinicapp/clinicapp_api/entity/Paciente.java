@@ -49,6 +49,9 @@ public class Paciente {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "dpi", length = 255)
+    private String dpi;
+
     public String getNombreCompleto() {
         return this.nombre + " " + this.apellido;
     }
