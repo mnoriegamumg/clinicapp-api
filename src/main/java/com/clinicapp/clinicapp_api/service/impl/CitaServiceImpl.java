@@ -17,6 +17,7 @@ import com.clinicapp.clinicapp_api.repository.MedicoRepository;
 import com.clinicapp.clinicapp_api.repository.PacienteRepository;
 import com.clinicapp.clinicapp_api.service.CitaService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -199,6 +201,34 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public List<Object[]> obtenerCitasDelDia() {
         return citaRepository.citasDelDia();
+    }
+
+    @Override
+    @Transactional
+    public CitaResponseDTO actualizarDiagnostico(Long id, String diagnostico, String comentariosMedico, String tratamiento) {
+        log.info("Actualizando diagnóstico de cita ID: {}", id);
+
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada con ID: " + id));
+
+        // Solo se puede agregar diagnóstico si la cita no está cancelada
+        if (cita.getEstado() == EstadoCita.CANCELADA) {
+            throw new RuntimeException("No se puede agregar diagnóstico a una cita cancelada");
+        }
+
+        cita.setDiagnostico(diagnostico);
+        cita.setComentariosMedico(comentariosMedico);
+        cita.setTratamiento(tratamiento);
+
+        // Si el médico agrega diagnóstico y la cita está PENDIENTE, se marca como ATENDIDA
+        if (cita.getEstado() == EstadoCita.PENDIENTE || cita.getEstado() == EstadoCita.CONFIRMADA) {
+            cita.setEstado(EstadoCita.ATENDIDA);
+            cita.setFechaAtencion(LocalDateTime.now());
+            log.info("Cita ID: {} marcada como ATENDIDA automáticamente al agregar diagnóstico", id);
+        }
+
+        Cita actualizada = citaRepository.save(cita);
+        return convertirAResponse(actualizada);
     }
 
     private CitaResponseDTO convertirAResponse(Cita cita) {

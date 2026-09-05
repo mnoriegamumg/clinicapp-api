@@ -10,16 +10,23 @@ import com.clinicapp.clinicapp_api.exception.ResourceNotFoundException;
 import com.clinicapp.clinicapp_api.repository.PacienteRepository;
 import com.clinicapp.clinicapp_api.service.PacienteService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class PacienteServiceImpl implements PacienteService {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final PacienteRepository pacienteRepository;
 
@@ -136,5 +143,45 @@ public class PacienteServiceImpl implements PacienteService {
                 .direccion(paciente.getDireccion())
                 .createdAt(paciente.getCreatedAt())
                 .build();
+    }
+
+    @Override
+    public List<PacienteResponseDTO> buscarPorRangoFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        log.info("Buscando pacientes entre {} y {}", fechaInicio, fechaFin);
+
+        if (fechaInicio == null || fechaFin == null) {
+            throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias");
+        }
+
+        if (fechaInicio.isAfter(fechaFin)) {
+            throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha fin");
+        }
+
+        String fechaInicioStr = fechaInicio.format(DATE_FORMATTER);
+        String fechaFinStr = fechaFin.format(DATE_FORMATTER);
+
+        List<Paciente> pacientes = pacienteRepository.buscarPorRangoFechas(fechaInicioStr, fechaFinStr);
+        log.info("Se encontraron {} pacientes en el rango de fechas", pacientes.size());
+
+        return pacientes.stream()
+                .map(this::convertirAResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PacienteResponseDTO> buscarPorFecha(LocalDate fecha) {
+        log.info("Buscando pacientes creados en la fecha: {}", fecha);
+
+        if (fecha == null) {
+            throw new IllegalArgumentException("La fecha es obligatoria");
+        }
+
+        String fechaStr = fecha.format(DATE_FORMATTER);
+        List<Paciente> pacientes = pacienteRepository.buscarPorFecha(fechaStr);
+        log.info("Se encontraron {} pacientes en la fecha {}", pacientes.size(), fecha);
+
+        return pacientes.stream()
+                .map(this::convertirAResponse)
+                .collect(Collectors.toList());
     }
 }

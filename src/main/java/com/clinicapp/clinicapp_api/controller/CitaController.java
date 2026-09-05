@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/citas")
@@ -115,5 +116,18 @@ public class CitaController {
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         citaService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/diagnostico")
+    public ResponseEntity<CitaResponseDTO> actualizarDiagnostico(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> request) {
+
+        String diagnostico = request.get("diagnostico");
+        String comentariosMedico = request.get("comentariosMedico");
+        String tratamiento = request.get("tratamiento");
+
+        CitaResponseDTO response = citaService.actualizarDiagnostico(id, diagnostico, comentariosMedico, tratamiento);
+        return ResponseEntity.ok(response);
     }
 }

@@ -6,6 +6,7 @@ package com.clinicapp.clinicapp_api.service;
 import com.clinicapp.clinicapp_api.dtos.PacienteRequestDTO;
 import com.clinicapp.clinicapp_api.dtos.PacienteResponseDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PacienteService {
@@ -28,4 +29,14 @@ public interface PacienteService {
     PacienteResponseDTO obtenerPorDpi(String dpi);
 
     boolean existeDpi(String dpi);
+
+    /**
+     * Buscar pacientes creados entre dos fechas (solo fecha, sin hora)
+     */
+    List<PacienteResponseDTO> buscarPorRangoFechas(LocalDate fechaInicio, LocalDate fechaFin);
+
+    /**
+     * Buscar pacientes creados en una fecha específica
+     */
+    List<PacienteResponseDTO> buscarPorFecha(LocalDate fecha);
 }

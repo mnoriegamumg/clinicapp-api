@@ -9,10 +9,12 @@ import com.clinicapp.clinicapp_api.dtos.PacienteResponseDTO;
 import com.clinicapp.clinicapp_api.service.PacienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -88,5 +90,28 @@ public class PacienteController {
     public ResponseEntity<Boolean> validarDpi(@RequestParam String dpi) {
         boolean existe = pacienteService.existeDpi(dpi);
         return ResponseEntity.ok(existe);
+    }
+
+    /**
+     * Buscar pacientes creados entre dos fechas (solo fecha, sin hora)
+     * Ejemplo: GET /api/pacientes/rango?inicio=2026-08-01&fin=2026-08-24
+     */
+    @GetMapping("/rango")
+    public ResponseEntity<List<PacienteResponseDTO>> buscarPorRango(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate inicio,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fin) {
+
+        return ResponseEntity.ok(pacienteService.buscarPorRangoFechas(inicio, fin));
+    }
+
+    /**
+     * Buscar pacientes creados en una fecha específica
+     * Ejemplo: GET /api/pacientes/por-fecha?fecha=2026-08-24
+     */
+    @GetMapping("/por-fecha")
+    public ResponseEntity<List<PacienteResponseDTO>> buscarPorFecha(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha) {
+
+        return ResponseEntity.ok(pacienteService.buscarPorFecha(fecha));
     }
 }

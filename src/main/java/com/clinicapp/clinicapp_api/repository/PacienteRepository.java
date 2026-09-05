@@ -37,4 +37,17 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
      * Verificar si un DPI ya existe en la base de datos
      */
     boolean existsByDpi(String dpi);
+
+    @Query(value = "SELECT * FROM pacientes WHERE DATE(created_at) BETWEEN :fechaInicio AND :fechaFin ORDER BY created_at DESC",
+            nativeQuery = true)
+    List<Paciente> buscarPorRangoFechas(
+            @Param("fechaInicio") String fechaInicio,
+            @Param("fechaFin") String fechaFin);
+
+    /**
+     * Buscar pacientes creados en una fecha específica
+     */
+    @Query(value = "SELECT * FROM pacientes WHERE DATE(created_at) = :fecha ORDER BY created_at DESC",
+            nativeQuery = true)
+    List<Paciente> buscarPorFecha(@Param("fecha") String fecha);
 }

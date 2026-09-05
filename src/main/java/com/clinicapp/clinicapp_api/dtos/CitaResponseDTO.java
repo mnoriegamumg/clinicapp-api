@@ -28,4 +28,9 @@ public class CitaResponseDTO {
     private EstadoCita    estado;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private String diagnostico;
+    private String comentariosMedico;
+    private String tratamiento;
+    private LocalDateTime fechaAtencion;
 }

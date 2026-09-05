@@ -29,4 +29,8 @@ public class CitaRequestDTO {
     private LocalDateTime fechaHora;
 
     private String motivo;
+
+    private String diagnostico;
+    private String comentariosMedico;
+    private String tratamiento;
 }

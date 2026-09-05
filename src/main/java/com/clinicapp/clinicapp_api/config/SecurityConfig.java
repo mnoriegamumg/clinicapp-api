@@ -35,7 +35,7 @@ public class SecurityConfig {
                         // Endpoints públicos
                         .requestMatchers("/auth/login").permitAll()
                         // Endpoints protegidos (por roles)
-                        .requestMatchers("/pacientes/**").hasAnyRole("RECEPCIONISTA", "ADMIN")
+                        .requestMatchers("/pacientes/**").hasAnyRole("RECEPCIONISTA", "ADMIN", "MEDICO")
                         .requestMatchers("/medicos/**").hasAnyRole("RECEPCIONISTA", "ADMIN")
                         .requestMatchers("/citas/**").hasAnyRole("RECEPCIONISTA", "ADMIN", "MEDICO")
                         .anyRequest().authenticated()

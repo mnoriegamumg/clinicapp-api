@@ -54,4 +54,16 @@ public class Cita {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "diagnostico", columnDefinition = "TEXT")
+    private String diagnostico;
+
+    @Column(name = "comentarios_medico", columnDefinition = "TEXT")
+    private String comentariosMedico;
+
+    @Column(name = "tratamiento", columnDefinition = "TEXT")
+    private String tratamiento;
+
+    @Column(name = "fecha_atencion")
+    private LocalDateTime fechaAtencion;
 }
