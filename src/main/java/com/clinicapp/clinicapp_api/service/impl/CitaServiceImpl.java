@@ -244,6 +244,9 @@ public class CitaServiceImpl implements CitaService {
                 .estado(cita.getEstado())
                 .createdAt(cita.getCreatedAt())
                 .updatedAt(cita.getUpdatedAt())
+                .comentariosMedico(cita.getComentariosMedico())
+                .diagnostico(cita.getDiagnostico())
+                .tratamiento(cita.getTratamiento())
                 .build();
     }
 }
