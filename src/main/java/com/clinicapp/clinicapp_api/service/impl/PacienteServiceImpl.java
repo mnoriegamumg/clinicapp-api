@@ -105,6 +105,17 @@ public class PacienteServiceImpl implements PacienteService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<PacienteResponseDTO> buscarPorNombreOApellido(String termino) {
+        if (termino == null || termino.trim().isEmpty()) {
+            return listarTodos();
+        }
+        return pacienteRepository.buscarPorNombreOApellido(termino.trim())
+                .stream()
+                .map(this::convertirAResponse)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public Long contarTotal() {

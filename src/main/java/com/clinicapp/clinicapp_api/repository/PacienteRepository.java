@@ -21,6 +21,9 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     @Query(value = Queries.BUSCAR_PACIENTES_POR_NOMBRE, nativeQuery = true)
     List<Paciente> buscarPorNombreCompleto(@Param("busqueda") String busqueda);
 
+    @Query(value = Queries.BUSCAR_PACIENTES_POR_NOMBRE_O_APELLIDO, nativeQuery = true)
+    List<Paciente> buscarPorNombreOApellido(@Param("termino") String termino);
+
     @Query(value = Queries.CONTAR_PACIENTES_TOTAL, nativeQuery = true)
     Long contarTotalPacientes();
 

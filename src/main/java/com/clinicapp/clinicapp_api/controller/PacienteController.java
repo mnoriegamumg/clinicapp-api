@@ -40,6 +40,18 @@ public class PacienteController {
         return ResponseEntity.ok(pacienteService.buscarPorNombre(q));
     }
 
+    /**
+     * Buscar pacientes por nombre O apellido (coincidencia parcial, independiente).
+     * A diferencia de /buscar (que busca sobre "nombre apellido" concatenado),
+     * aquí el término se compara por separado contra el nombre y contra el apellido.
+     * Ejemplo: GET /api/pacientes/buscar-por-nombre-apellido?termino=perez
+     */
+    @GetMapping("/buscar-por-nombre-apellido")
+    public ResponseEntity<List<PacienteResponseDTO>> buscarPorNombreOApellido(
+            @RequestParam(required = false) String termino) {
+        return ResponseEntity.ok(pacienteService.buscarPorNombreOApellido(termino));
+    }
+
     @GetMapping("/contar")
     public ResponseEntity<Long> contarTotal() {
         return ResponseEntity.ok(pacienteService.contarTotal());

@@ -20,6 +20,12 @@ public final class Queries {
     public static final String CONTAR_PACIENTES_TOTAL =
             "SELECT COUNT(*) FROM pacientes";
 
+    public static final String BUSCAR_PACIENTES_POR_NOMBRE_O_APELLIDO =
+            "SELECT * FROM pacientes " +
+                    "WHERE nombre LIKE CONCAT('%', :termino, '%') " +
+                    "OR apellido LIKE CONCAT('%', :termino, '%') " +
+                    "ORDER BY nombre ASC, apellido ASC";
+
     // ============================================================
     // QUERIES PARA MEDICOS
     // ============================================================

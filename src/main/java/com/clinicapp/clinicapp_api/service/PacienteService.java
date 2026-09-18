@@ -23,6 +23,11 @@ public interface PacienteService {
 
     List<PacienteResponseDTO> buscarPorNombre(String busqueda);
 
+    /**
+     * Buscar pacientes cuyo nombre O apellido contenga el término indicado.
+     */
+    List<PacienteResponseDTO> buscarPorNombreOApellido(String termino);
+
     Long contarTotal();
 
 
