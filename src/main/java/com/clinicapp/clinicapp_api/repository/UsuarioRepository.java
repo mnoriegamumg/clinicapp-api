@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,4 +25,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query(value = Queries.OBTENER_ROL_USUARIO, nativeQuery = true)
     String obtenerRolUsuario(@Param("username") String username);
+
+    @Query(value = Queries.CONTAR_USUARIOS_TOTAL, nativeQuery = true)
+    Long contarTotalUsuarios();
+
+    @Query(value = Queries.BUSCAR_USUARIOS_POR_USERNAME, nativeQuery = true)
+    List<Usuario> buscarPorUsername(@Param("busqueda") String busqueda);
 }

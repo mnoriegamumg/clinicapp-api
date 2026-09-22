@@ -33,4 +33,8 @@ public class CitaResponseDTO {
     private String comentariosMedico;
     private String tratamiento;
     private LocalDateTime fechaAtencion;
+
+    // Médico que registró el diagnóstico
+    private Long medicoDiagnosticoId;
+    private String medicoDiagnosticoNombreCompleto;
 }

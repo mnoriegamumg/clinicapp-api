@@ -97,4 +97,12 @@ public final class Queries {
 
     public static final String OBTENER_ROL_USUARIO =
             "SELECT rol FROM usuarios WHERE username = :username";
+
+    public static final String CONTAR_USUARIOS_TOTAL =
+            "SELECT COUNT(*) FROM usuarios";
+
+    public static final String BUSCAR_USUARIOS_POR_USERNAME =
+            "SELECT * FROM usuarios " +
+                    "WHERE username LIKE CONCAT('%', :busqueda, '%') " +
+                    "ORDER BY username ASC";
 }

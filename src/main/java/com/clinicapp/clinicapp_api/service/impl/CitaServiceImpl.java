@@ -205,8 +205,8 @@ public class CitaServiceImpl implements CitaService {
 
     @Override
     @Transactional
-    public CitaResponseDTO actualizarDiagnostico(Long id, String diagnostico, String comentariosMedico, String tratamiento) {
-        log.info("Actualizando diagnóstico de cita ID: {}", id);
+    public CitaResponseDTO actualizarDiagnostico(Long id, Long medicoId, String diagnostico, String comentariosMedico, String tratamiento) {
+        log.info("Actualizando diagnóstico de cita ID: {} por médico ID: {}", id, medicoId);
 
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada con ID: " + id));
@@ -216,6 +216,11 @@ public class CitaServiceImpl implements CitaService {
             throw new RuntimeException("No se puede agregar diagnóstico a una cita cancelada");
         }
 
+        // Registrar qué médico dio el diagnóstico (obligatorio)
+        Medico medicoDiagnostico = medicoRepository.findById(medicoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Médico no encontrado con ID: " + medicoId));
+
+        cita.setMedicoDiagnostico(medicoDiagnostico);
         cita.setDiagnostico(diagnostico);
         cita.setComentariosMedico(comentariosMedico);
         cita.setTratamiento(tratamiento);
@@ -247,6 +252,9 @@ public class CitaServiceImpl implements CitaService {
                 .comentariosMedico(cita.getComentariosMedico())
                 .diagnostico(cita.getDiagnostico())
                 .tratamiento(cita.getTratamiento())
+                .fechaAtencion(cita.getFechaAtencion())
+                .medicoDiagnosticoId(cita.getMedicoDiagnostico() != null ? cita.getMedicoDiagnostico().getId() : null)
+                .medicoDiagnosticoNombreCompleto(cita.getMedicoDiagnostico() != null ? cita.getMedicoDiagnostico().getNombreCompleto() : null)
                 .build();
     }
 }

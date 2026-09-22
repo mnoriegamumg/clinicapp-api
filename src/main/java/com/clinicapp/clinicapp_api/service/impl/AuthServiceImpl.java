@@ -7,6 +7,7 @@ import com.clinicapp.clinicapp_api.dtos.AuthResponseDTO;
 import com.clinicapp.clinicapp_api.dtos.LoginRequestDTO;
 import com.clinicapp.clinicapp_api.entity.Usuario;
 import com.clinicapp.clinicapp_api.exception.CredencialesInvalidasException;
+import com.clinicapp.clinicapp_api.exception.ResourceNotFoundException;
 import com.clinicapp.clinicapp_api.repository.UsuarioRepository;
 import com.clinicapp.clinicapp_api.security.JwtTokenProvider;
 import com.clinicapp.clinicapp_api.service.AuthService;
@@ -76,5 +77,24 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String obtenerRol(String username) {
         return usuarioRepository.obtenerRolUsuario(username);
+    }
+
+    @Override
+    public void cambiarPassword(String username, String passwordActual, String passwordNueva) {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + username));
+
+        // Verificar que la contraseña actual sea correcta
+        if (!passwordEncoder.matches(passwordActual, usuario.getPassword())) {
+            throw new CredencialesInvalidasException("La contraseña actual es incorrecta");
+        }
+
+        // La nueva contraseña no puede ser igual a la actual
+        if (passwordEncoder.matches(passwordNueva, usuario.getPassword())) {
+            throw new IllegalArgumentException("La nueva contraseña no puede ser igual a la actual");
+        }
+
+        usuario.setPassword(passwordEncoder.encode(passwordNueva));
+        usuarioRepository.save(usuario);
     }
 }

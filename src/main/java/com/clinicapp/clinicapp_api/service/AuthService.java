@@ -13,4 +13,9 @@ public interface AuthService {
     Boolean verificarCredenciales(String username, String password);
 
     String obtenerRol(String username);
+
+    /**
+     * Cambia la contraseña del usuario indicado, validando previamente su contraseña actual.
+     */
+    void cambiarPassword(String username, String passwordActual, String passwordNueva);
 }

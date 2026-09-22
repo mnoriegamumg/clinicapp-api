@@ -123,11 +123,23 @@ public class CitaController {
             @PathVariable Long id,
             @RequestBody Map<String, String> request) {
 
+        String medicoIdStr = request.get("medicoId");
+        if (medicoIdStr == null || medicoIdStr.isBlank()) {
+            throw new IllegalArgumentException("El campo 'medicoId' es obligatorio para registrar el diagnóstico");
+        }
+
+        Long medicoId;
+        try {
+            medicoId = Long.valueOf(medicoIdStr.trim());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("El campo 'medicoId' debe ser un número válido");
+        }
+
         String diagnostico = request.get("diagnostico");
         String comentariosMedico = request.get("comentariosMedico");
         String tratamiento = request.get("tratamiento");
 
-        CitaResponseDTO response = citaService.actualizarDiagnostico(id, diagnostico, comentariosMedico, tratamiento);
+        CitaResponseDTO response = citaService.actualizarDiagnostico(id, medicoId, diagnostico, comentariosMedico, tratamiento);
         return ResponseEntity.ok(response);
     }
 }

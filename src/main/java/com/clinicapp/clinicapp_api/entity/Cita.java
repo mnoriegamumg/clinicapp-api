@@ -36,6 +36,14 @@ public class Cita {
     @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
 
+    /**
+     * Médico que registró el diagnóstico. Puede diferir del médico asignado a la cita
+     * (por ejemplo, si otro médico atiende la consulta). Se establece al guardar el diagnóstico.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medico_diagnostico_id")
+    private Medico medicoDiagnostico;
+
     @Column(name = "fecha_hora", nullable = false)
     private LocalDateTime fechaHora;
 

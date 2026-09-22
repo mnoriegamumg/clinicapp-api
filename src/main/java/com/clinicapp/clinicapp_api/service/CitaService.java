@@ -46,5 +46,5 @@ public interface CitaService {
 
     List<Object[]> obtenerCitasDelDia();
 
-    CitaResponseDTO actualizarDiagnostico(Long id, String diagnostico, String comentariosMedico, String tratamiento);
+    CitaResponseDTO actualizarDiagnostico(Long id, Long medicoId, String diagnostico, String comentariosMedico, String tratamiento);
 }

@@ -33,8 +33,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
-                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         // Endpoints protegidos (por roles)
+                        // La administración de usuarios es exclusiva de ADMIN
+                        .requestMatchers("/usuarios/**").hasRole("ADMIN")
                         .requestMatchers("/pacientes/**").hasAnyRole("RECEPCIONISTA", "ADMIN", "MEDICO")
                         .requestMatchers("/medicos/**").hasAnyRole("RECEPCIONISTA", "ADMIN")
                         .requestMatchers("/citas/**").hasAnyRole("RECEPCIONISTA", "ADMIN", "MEDICO")

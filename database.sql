@@ -107,3 +107,9 @@ ADD COLUMN diagnostico TEXT,
 ADD COLUMN comentarios_medico TEXT,
 ADD COLUMN tratamiento TEXT,
 ADD COLUMN fecha_atencion DATETIME;
+
+-- Médico que registró el diagnóstico (puede diferir del médico asignado a la cita)
+ALTER TABLE citas
+ADD COLUMN medico_diagnostico_id BIGINT NULL,
+ADD CONSTRAINT fk_citas_medico_diagnostico
+    FOREIGN KEY (medico_diagnostico_id) REFERENCES medicos (id);
